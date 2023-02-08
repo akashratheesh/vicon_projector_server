@@ -8,7 +8,7 @@ import pyqtgraph as pg
 
 from threading import Thread
 
-from .vicon_canvas import vicon_canvas
+from .vicon_canvas import Vicon_Canvas
 
 
 class Calibration_Setup:
@@ -59,7 +59,7 @@ class Calibration_Setup:
         # Create a new Canvas with sample config.
         # X Limit = [0, width of the monitor]
         # Y Limit = [0, height of the monitor]
-        self.canvas = vicon_canvas(config_data=self.config_data)
+        self.canvas = Vicon_Canvas(config_data=self.config_data)
 
         # Set Plot axis to monitor width and height
         self.config_data["x"] = [0, self.canvas.monitor.width()]

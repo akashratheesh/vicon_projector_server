@@ -5,10 +5,10 @@ import os
 import json
 import numpy as np
 
-class vicon_canvas(QtWidgets.QMainWindow):
+class Vicon_Canvas(QtWidgets.QMainWindow):
     
     def __init__(self, config_data:dict, *args, **kwargs):
-        super(vicon_canvas, self).__init__(*args, **kwargs)
+        super(Vicon_Canvas, self).__init__(*args, **kwargs)
 
         self.config_data = config_data
 
@@ -41,7 +41,7 @@ class vicon_canvas(QtWidgets.QMainWindow):
         self.window.setMouseEnabled(x=False, y=False)           # Prevent Mouse interactions (panning/zooming)
 
         monitors = QtGui.QScreen.virtualSiblings(self.screen())
-        
+
         if "display_monitor" in self.config_data.keys():
             self.monitor = monitors[self.config_data["display_monitor"]].availableGeometry()
         else:

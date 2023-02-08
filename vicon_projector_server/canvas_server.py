@@ -1,5 +1,5 @@
 from PyQt6 import QtWidgets
-from vicon_projector_server import vicon_canvas
+from vicon_projector_server import Vicon_Canvas
 from vicon_projector_server import rpc_server
 import sys
 import os
@@ -13,7 +13,7 @@ class Projection_Server:
 
         self.app = QtWidgets.QApplication([])
         self.load_config_data(config_file = config_file)
-        self.canvas = vicon_canvas(self.config_data)
+        self.canvas = Vicon_Canvas(self.config_data)
         self.plot_handle = self.canvas.window
 
         self.managed_threads = {}
@@ -78,19 +78,19 @@ class Projection_Server:
             
         return _payload
 
-    def get_canvas(self) -> 'vicon_canvas':
+    def get_canvas(self) -> 'Vicon_Canvas':
         '''Returns canvas object handle
 
         Returns:
-            vicon_canvas: Vicon canvas handle 
+            Vicon_Canvas: Vicon canvas handle 
         '''
         return self.canvas
     
-    def get_plot_handle(self) -> 'vicon_canvas.window':
+    def get_plot_handle(self) -> 'Vicon_Canvas.window':
         '''Return Plot handle (:obj:`PyQtGraph.PlotWidget`)
 
         Returns:
-            vicon_canvas.window: Plot handle.
+            Vicon_Canvas.window: Plot handle.
         '''
         return self.plot_handle
     
