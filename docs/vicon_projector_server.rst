@@ -7,7 +7,7 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
-   vicon_projector_server.projection_item
+   vicon_projector_server.Projection_Item
 
 Submodules
 ----------

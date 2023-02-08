@@ -5,6 +5,8 @@ import sys
 import os
 import json
 
+from pyqtgraph.Qt import QtGui, QtCore
+
 from threading import Thread
 
 class Projection_Server:
@@ -37,6 +39,22 @@ class Projection_Server:
             "connection": True
         }
         return payload
+    
+    def vicon_loop(self):
+        ''' Loop through all tracked item and run vrpn mainloop
+        '''
+        while True:
+            for item in self.all_plot_items:
+                if self.all_plot_items[item].is_vicon_tracked:
+                    self.all_plot_items[item].vicon_tracker.mainloop()
+    
+    def position_update(self):
+        
+        
+        for item in self.all_plot_items:
+            self.all_plot_items[item].position_updater()
+
+        self.app.processEvents()
 
     def run_canvas(self)->None:
         '''
@@ -46,7 +64,14 @@ class Projection_Server:
             None:
         '''
         self.canvas.showFullScreen()
-        sys.exit(self.app.exec())
+        #sys.exit(self.app.exec())
+
+        timer = QtCore.QTimer() # to create a thread that calls a function at intervals
+        timer.timeout.connect(self.position_update)
+        timer.start(self.config_data.get("update_ms",25))
+
+        QtGui.QGuiApplication.instance().exec()
+        #sys.exit(self.app.exec())
 
     def run(self) -> None:
         '''
@@ -61,6 +86,9 @@ class Projection_Server:
         '''
         self.managed_threads["JSON_RPC"] = Thread(target=self.rpc_server.run)
         self.managed_threads["JSON_RPC"].start()
+
+        self.managed_threads["VICON_LOOP"] = Thread(target=self.vicon_loop)
+        self.managed_threads["VICON_LOOP"].start()
         
 
         self.run_canvas()

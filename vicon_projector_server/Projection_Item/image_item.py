@@ -23,12 +23,14 @@ class image_item(tracked_item):
 
         self.height = height
         self.width = width
+
         
         self.handle = pg.ImageItem(image=image)
-        self.handle.setRect(position[0]-width/2,    # Origin at Center of image
-                            position[1]-height/2,   # Origin at Center of image
-                            width,
-                            height)
+
+        self.handle.setRect(position[0]-width/2,      # Origin at Center of image
+                        position[1]-height/2,         # Origin at Center of image
+                        width,
+                        height)
         
 
         super().__init__(name=name,
@@ -36,4 +38,14 @@ class image_item(tracked_item):
                         position=position,
                         zValue=zValue)
 
+
+        
+    def position_updater(self):
+        self.position[0] += 2 
+        self.position[1] += 2 
+
+        self.handle.setRect(self.position[0]-self.width/2,      # Origin at Center of image
+                    self.position[1]-self.height/2,             # Origin at Center of image
+                    self.width,
+                    self.height)
         

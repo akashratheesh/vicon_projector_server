@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
    name='vicon_projector_server',
-   version='0.1.0',
+   version='0.2.0',
    packages=['vicon_projector_server'],
    license='LICENSE',
    maintainer="Akash Ratheesh",

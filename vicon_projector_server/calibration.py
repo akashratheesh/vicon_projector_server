@@ -121,6 +121,9 @@ class Calibration_Setup:
         # Port for JSON RPC
         _config["port"] =  4000
 
+        # Update frequency (in ms)
+        _config["update_ms"] =  25
+
         return _config
     
     def save_config(self, filename:str):

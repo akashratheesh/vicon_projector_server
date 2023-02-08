@@ -1,4 +1,5 @@
 import numpy as np
+from typing import Callable
 
 class tracked_item:
     '''Base Item
@@ -16,9 +17,51 @@ class tracked_item:
 
         self.handle = handle
 
+        self.is_vicon_tracked = False
+
         if zValue is not None:
             self.zValue = zValue
     
+    def set_vicon_tracker(self, tracker_name:str,
+                        enable_position:bool = True,
+                        enable_velocity:bool = False,
+                        position_callback:Callable = None,
+                        velocity_callback:Callable = None):
+        '''Setup Vicon tracker
+
+        Parameters:
+            tracker_name(str): Name of the tracker. Eg: tracker@ip_address
+            enable_position(bool): Enable callback function for position data. Default: True
+            enable_velocity(bool): Enable callback function for velocity data. Default: False
+            position_callback(function): Overrides default vicon_position_callback function. 
+                                        Function format: fn(obj,position_data)
+            velocity_callback(function): Overrides default vicon_velocity_callback function. 
+                                        Function format: fn(obj,velocity_data)
+
+        '''
+        self.vicon_tracker = vrpn.receiver.Tracker(tracker_name.device)
+
+        if enable_position:
+            if position_callback:
+                _position_fn = position_callback
+            else:
+                _position_fn = self.vicon_position_callback
+            
+            # Set callback handler
+            self.vicon_tracker.register_change_handler(None,_position_fn,"position")
+            self.is_vicon_tracked = True
+            self.vicon_position = []
+        
+        if enable_velocity:
+            if velocity_callback:
+                _velocity_fn = velocity_callback
+            else:
+                _velocity_fn = self.vicon_velocity_callback
+            
+            # Set callback handler
+            self.vicon_tracker.register_change_handler(None,_velocity_fn,"velocity")
+            self.is_vicon_tracked = True
+            self.vicon_velocity = []
     
 
     def ros_callback(self,**kwargs):
@@ -29,15 +72,36 @@ class tracked_item:
         '''
         return NotImplementedError()
 
-    def vicon_callback(self, **kwargs):
+    def vicon_position_callback(self, data):
         '''Vicon Callback
 
-        Callback function for Vicon Datastream. Generally updates position.
+        Position Callback function for VRPN. Override to use custom method.
 
-        Override to use custom method.
+        Parameters:
+            data(dict): Vicon Data
 
         '''
-        return NotImplementedError()
+        self.vicon_position = [data['position'][0] + self.tracking_offset[0],
+                            data['position'][1] + self.tracking_offset[1]]
+        self.position = self.vicon_position
+    
+    def vicon_velocity_callback(self, data):
+        '''Vicon Callback
+
+        Velocity Callback function for VRPN. Override to use custom method.
+
+        Parameters:
+            data(dict): Vicon Data
+
+        '''
+        self.vicon_velocity = [data['velocity'][0], data['velocity'][1]]
+        
+    def position_updater(self):
+        ''' Defines how graphic item's position is updated.
+        Should use ``position`` attribute to get updated position
+
+        '''
+        raise NotImplementedError()
 
     @property
     def name(self):

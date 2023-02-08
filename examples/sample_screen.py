@@ -32,6 +32,7 @@ img_obj1 = Projection_Item.image_item(name = "robot1",
 
 canvas.set_background(image = bg_img)
 
+
 projection_server.add_new_item(img_obj1)
 
 
