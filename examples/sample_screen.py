@@ -8,17 +8,17 @@ import copy
 import time
 
 
-projection_server = Projection_Server(config_file = "/home/akashratheesh/Work/CU/vicon_projector/examples/sample_server/sample_calib.json")
+projection_server = Projection_Server(config_file = "sample_calib.json")
 
 canvas = projection_server.get_canvas()
 plot_handle = projection_server.get_plot_handle()
 
-bg_img = Image.open("/home/akashratheesh/Work/CU/vicon_projector/examples/sample_server/sample_bg.jpeg")
+bg_img = Image.open("sample_bg.jpeg")
 bg_img.load()
 bg_img = np.asarray(bg_img,dtype="int32")
 
 
-robot_img = Image.open("/home/akashratheesh/Work/CU/vicon_projector/examples/sample_server/sample_agent.png").rotate(-90)
+robot_img = Image.open("sample_agent.png").rotate(-90)
 robot_img.load()
 robot_img = np.asarray(robot_img,dtype="int32")
 
