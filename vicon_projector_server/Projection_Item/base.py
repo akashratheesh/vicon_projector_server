@@ -1,5 +1,6 @@
 import numpy as np
 from typing import Callable
+import vrpn
 
 class tracked_item:
     '''Base Item
@@ -21,6 +22,8 @@ class tracked_item:
 
         if zValue is not None:
             self.zValue = zValue
+        
+        self.tracking_offset = [0,0]
     
     def set_vicon_tracker(self, tracker_name:str,
                         enable_position:bool = True,
@@ -39,7 +42,7 @@ class tracked_item:
                                         Function format: fn(obj,velocity_data)
 
         '''
-        self.vicon_tracker = vrpn.receiver.Tracker(tracker_name.device)
+        self.vicon_tracker = vrpn.receiver.Tracker(tracker_name)
 
         if enable_position:
             if position_callback:
@@ -72,7 +75,7 @@ class tracked_item:
         '''
         return NotImplementedError()
 
-    def vicon_position_callback(self, data):
+    def vicon_position_callback(self, custom_data, data):
         '''Vicon Callback
 
         Position Callback function for VRPN. Override to use custom method.
@@ -85,7 +88,7 @@ class tracked_item:
                             data['position'][1] + self.tracking_offset[1]]
         self.position = self.vicon_position
     
-    def vicon_velocity_callback(self, data):
+    def vicon_velocity_callback(self, custom_data, data):
         '''Vicon Callback
 
         Velocity Callback function for VRPN. Override to use custom method.

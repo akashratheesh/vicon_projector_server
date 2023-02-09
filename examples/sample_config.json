@@ -1,0 +1,10 @@
+{
+    "_COMMENTS_": "Auto-generated calibration file",
+    "x": [-0.358,3.919],
+    "y": [1.8755,4.594],
+    "display_monitor": 0,
+    "hostname": "0.0.0.0",
+    "port": 4000,
+    "update_ms": 25
+}
+

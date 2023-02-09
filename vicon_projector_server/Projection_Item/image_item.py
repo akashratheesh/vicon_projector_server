@@ -41,8 +41,7 @@ class image_item(tracked_item):
 
         
     def position_updater(self):
-        self.position[0] += 2 
-        self.position[1] += 2 
+
 
         self.handle.setRect(self.position[0]-self.width/2,      # Origin at Center of image
                     self.position[1]-self.height/2,             # Origin at Center of image

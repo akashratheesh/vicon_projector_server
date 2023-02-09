@@ -7,6 +7,7 @@ from PyQt6 import QtWidgets
 import pyqtgraph as pg
 
 from threading import Thread
+import vrpn
 
 from .vicon_canvas import Vicon_Canvas
 
@@ -37,7 +38,7 @@ class Calibration_Setup:
         self.tracker_name = tracker_name
         self.monitor_number = monitor_number
 
-        self.tracker_position = [1,1]
+        self.tracker_position = [None,None]
         
         self.x_multiplier = []
         self.y_multiplier = []
@@ -91,6 +92,11 @@ class Calibration_Setup:
         ''' Start Calibration
         '''
         
+
+        # Start Vicon Thread
+        vicon_thread = Thread(target=self.vicon_tracker)
+        vicon_thread.start()
+
         # Start Menu in new thread
         menu_thread = Thread(target=self.menu)
         menu_thread.start()
@@ -293,7 +299,7 @@ class Calibration_Setup:
         return _rectangle
     
     
-    def vicon_position_updator(self,t):
+    def vicon_position_updator(self,custom_data, t):
         '''Vicon Position Callback Function
         
         Parameters:
