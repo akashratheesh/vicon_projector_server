@@ -5,6 +5,7 @@ setup(
    version='0.2.0',
    packages=['vicon_projector_server'],
    license='LICENSE',
+   author="Akash Ratheesh <akash.ratheeshbabu@colorado.edu>"
    maintainer="Akash Ratheesh",
    maintainer_email="akash.ratheeshbabu@colorado.edu",
    description='Vicon Projector Server',
@@ -16,5 +17,7 @@ setup(
        "Werkzeug",
        "json-rpc",
        "tabulate",
+       "sphinx",
+       "sphinx_rtd_theme"
    ],
 )
