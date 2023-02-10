@@ -4,13 +4,19 @@ import vrpn
 
 class tracked_item:
     '''Base Item
-        
+
+    Attributes:
+        name(str): Unique name to identify items on the canvas/projection server.
+        position(numpy.ndarray = [x,y]): Position of the item. Sets ``handle.position``, if available.
+        zValue(float): Z-Value of the item. Determines how items are stacked. `Relative` (Higher Z-Value = Top).
+        tracking_offset (list[float]): Defines how posiiton is offset from vicon/ros position. Check the attritube description for more info.        
     '''
     def __init__(self,
                 name: str,
                 handle:'pyqtgraph.GraphicsObject',
                 position: np.ndarray,
-                zValue: float = None):
+                zValue: float = None,
+                tracking_offset: 'list[int]' = [0.0,0.0]):
 
         self.name = name
 
@@ -23,7 +29,7 @@ class tracked_item:
         if zValue is not None:
             self.zValue = zValue
         
-        self.tracking_offset = [0,0]
+        self.tracking_offset = tracking_offset
     
     def set_vicon_tracker(self, tracker_name:str,
                         enable_position:bool = True,

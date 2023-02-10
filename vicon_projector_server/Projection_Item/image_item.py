@@ -12,6 +12,8 @@ class image_item(tracked_item):
         width(float): Width of the image.
         height(float): Height of the image.
         zValue(float): Z-Value of the item. Determines how items are stacked. `Relative` (Higher Z-Value = Top).
+        tracking_offset (list[float]): Defines how posiiton is offset from vicon/ros position. Check more info at `tracked_item.tracking_offset`
+        **kwargs: Additional Keyword arguments. Will be passed on to the actual pyqtgraph graphic item handle
     '''
     def __init__(self,
                 name: str,
@@ -19,14 +21,17 @@ class image_item(tracked_item):
                 position: np.ndarray,
                 width: float,
                 height: float,
-                zValue:float = None):
+                zValue:float = None,
+                tracking_offset: 'list[float]' = [0.0,0.0],
+                **kwargs):
 
         self.height = height
         self.width = width
 
-        
-        self.handle = pg.ImageItem(image=image)
+        # Create a new pyqtgraph image item
+        self.handle = pg.ImageItem(image=image,**kwargs)
 
+        # Set Initial Position
         self.handle.setRect(position[0]-width/2,      # Origin at Center of image
                         position[1]-height/2,         # Origin at Center of image
                         width,
@@ -36,7 +41,8 @@ class image_item(tracked_item):
         super().__init__(name=name,
                         handle = self.handle,
                         position=position,
-                        zValue=zValue)
+                        zValue=zValue,
+                        tracking_offset = tracking_offset)
 
 
         
